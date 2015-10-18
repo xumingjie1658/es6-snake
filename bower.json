@@ -1,0 +1,11 @@
+{
+  "name": "es6-snake",
+  "description": "Gluttonous Snake implements by es6 and threejs",
+  "version": "0.0.1",
+  "homepage": "git@github.com:xumingjie1658/es6-snake.git",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "three.js" : "0.72.0"
+  }
+}
