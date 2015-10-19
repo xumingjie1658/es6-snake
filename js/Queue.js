@@ -5,18 +5,15 @@ import ErrorCode from './ErrorCode';
 
 class Queue {
 
-    const MAX_SIZE = 100;
-
-    static maxSize = MAX_SIZE;
-
-    contructor(head) {
+    constructor() {
+        this.maxSize = 100;
         this.size = 0;
         this.front = null;
         this.rear = null;
     }
 
     isFull() {
-        return (this.size == maxSize);
+        return (this.size == this.maxSize);
     }
 
     isEmpty() {
@@ -26,7 +23,8 @@ class Queue {
     canFind(position){
         let node = this.front;
         while(node != null) {
-            if (node.getPosition() === position) {
+            let nodePosition = node.getPosition();
+            if (position.x == nodePosition.x && position.y == nodePosition.y) {
                 return true;
             }
             node = node.next;
@@ -35,14 +33,14 @@ class Queue {
     }
 
     enqueue(position) {
-        if(isFull()) {
+        if(this.isFull()) {
             return {
                 'success' : false,
                 'errorCode' : ErrorCode.QUEUE_FULL
             }
         }
         let newNode = new Node(position);
-        if(isEmpty()) {
+        if(this.isEmpty()) {
             this.front = newNode;
         }
         else {
@@ -56,7 +54,7 @@ class Queue {
     }
 
     dequeue() {
-        if(isEmpty()){
+        if(this.isEmpty()){
             return {
                 'success' : false,
                 'errorCode' : ErrorCode.QUEUE_EMPTY
@@ -64,7 +62,7 @@ class Queue {
         }
         this.front = this.front.next;
         this.size--;
-        if(isEmpty()) {
+        if(this.isEmpty()) {
             this.rear = null;
         }
 
@@ -77,4 +75,10 @@ class Queue {
         return this.rear;
     }
 
+    getFront() {
+        return this.front;
+    }
+
 }
+
+export default Queue;

@@ -2,10 +2,11 @@
 
 import Event from './Event';
 
-class KeyBoardEvent {
-    contructor() { //定义键盘事件
-
+export default (function() {
+    return {
+        'KeyUpEvent' : new Event('KeyUpEvent'),
+        'KeyDownEvent' : new Event('KeyDownEvent'),
+        'KeyLeftEvent' : new Event('KeyLeftEvent'),
+        'KeyRightEvent' : new Event('KeyRightEvent')
     }
-};
-
-export default KeyBoardEvent;
+})();

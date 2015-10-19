@@ -2,7 +2,7 @@
 
 class Node {
 
-    contructor(position) {
+    constructor(position) {
         this.position = position;
         this.next = null;
     }
