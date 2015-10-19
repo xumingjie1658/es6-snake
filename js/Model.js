@@ -7,6 +7,7 @@ import Event from './Event';
 class Model {
 
     constructor(food, snake) {
+        this.mapSize = 10;
         this.food = food;
         this.snake = snake;
         this.score = 0;

@@ -1,8 +1,7 @@
 'use strict';
 
 class View {
-    constructor(canvasId) {
-        this.mapSize = 10;
+    constructor() {
         this.fps = 5;
     }
 
@@ -15,6 +14,10 @@ class View {
     }
 
     render() {
+
+    }
+
+    stop() {
 
     }
 };

@@ -51,10 +51,6 @@ class CanvasView extends View{
         this.context.fillRect(x * 40 +2, y * 40 + 2, 36, 36);
     }
 
-    updateScore(score) {
-        this.scoreElement.innerHTML = score;
-    }
-
     stop() {
         clearInterval(this.interval);
     }
