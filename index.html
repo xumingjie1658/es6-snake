@@ -2,17 +2,43 @@
 <html>
 	<head>
 		<title>snake</title>
+		<style>
+			.left-part {
+				float : left;
+			}
+
+			.right-part {
+				float : right;
+			}
+
+			#scene-container {
+				width: 100%;
+				overflow: hidden;
+			}
+
+		</style>
 	</head>
 	<body>
-		<canvas id="snake-canvas" width="400" height="400" style="background-color: #ecf0f1"></canvas>
-		<br>
-		<br>
-		<div style="width: 400px; text-align: center">总分 : <span id="score">0</span></div>
+		<div id="scene-container">
+			<div class="left-part">
+				<canvas id="snake-canvas" width="400" height="400" style="background-color: #ecf0f1"></canvas>
+				<br>
+				<br>
+				<div style="width: 400px; text-align: center">总分 : <span id="score">0</span></div>
+			</div>
+			<div class="right-part">
+				<div id="3d-view-container"></div>
+				<br>
+				<br>
+				<div style="width: 600px; text-align: center">总分 : <span id="3d-score">0</span></div>
+			</div>
+		</div>
 		<br>
 		<br>
 		<button style="width: 80px; height :40px;text-align:center;display:block;position:relative;margin:auto" id="restartButton">restart</button>
 	</body>
+	<script src="lib/three.js/three.min.js"></script>
 	<!-- inject:js -->
-	<script src='./dst/es6-snakee03b4f78d0561a73309e586b72d76e58.js' type='text/javascript'></script>
+	<script src='./dst/es6-snakea1952667b98e14d6917a3a6a22b64195.js' type='text/javascript'></script>
 	<!-- endinject -->
 </html>

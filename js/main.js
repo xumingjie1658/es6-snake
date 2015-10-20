@@ -3,6 +3,7 @@ import Snake from './Snake';
 import Food from './Food';
 import Model from './Model';
 import CanvasView from './CanvasView';
+import ThreeDView from './3DView';
 import Controller from './Controller';
 
 (function(){
@@ -16,8 +17,11 @@ import Controller from './Controller';
     const canvas = document.getElementById(convasId);
     const context = canvas.getContext(contextType);
     const restartButton = document.getElementById('restartButton');
+    const threeDViewElement = document.getElementById('3d-view-container');
+    const threeDScoreElement = document.getElementById("3d-score");
     let canvasView = new CanvasView(canvas,context,scoreElement);
-    let controller = new Controller(model, canvasView, restartButton);
+    let threeDView = new ThreeDView(threeDViewElement,threeDScoreElement);
+    let controller = new Controller(model, canvasView, threeDView, restartButton);
     controller.init();
 
 })();

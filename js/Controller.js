@@ -3,17 +3,20 @@
 import Model from "./Model";
 import CanvasView from "./CanvasView";
 import KeyBoardEvent from "./KeyBoardEvent";
+import ThreeDView from "./3DView";
 
 class Controller {
 
-    constructor(model, CanvasView, restartButton) {
+    constructor(model, canvasView, threeDView, restartButton) {
         this.model = model;
-        this.canvasView = CanvasView;
+        this.canvasView = canvasView;
+        this.threeDView = threeDView;
         this.restartButton = restartButton;
+        this.fps = 5;
     }
 
     init() {
-        this.canvasView.start(this.model);
+        this.start();
         this.bindEvent();
     }
 
@@ -24,10 +27,11 @@ class Controller {
 
         this.model.scoreUpdateEvent.attach(function(sender,args){
             this.canvasView.updateScore(args.score);
+            this.threeDView.updateScore(args.score);
         }.bind(this));
 
         this.model.stopViewEvent.attach(function(){
-            this.canvasView.stop();
+            this.stop();
         }.bind(this));
 
         for(let prop in KeyBoardEvent){
@@ -80,10 +84,29 @@ class Controller {
         }
     }
 
+    start() {
+        this.interval = setInterval(function(){
+            if(this.model.checkFood()){
+
+                this.model.snake.grow();
+            }
+            else {
+                this.model.snake.move();
+            }
+            this.canvasView.render(this.model);
+            this.threeDView.render(this.model);
+        }.bind(this),(1 / (this.fps / 1000)));
+    }
+
+    stop() {
+        clearInterval(this.interval);
+    }
+
     reset() {
         this.model.reset();
-        this.canvasView.start(this.model);
+        this.start();
         this.canvasView.updateScore(0);
+        this.threeDView.updateScore(0);
     }
 
 }

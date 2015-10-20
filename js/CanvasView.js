@@ -15,18 +15,6 @@ class CanvasView extends View{
         this.context.fillRect(0, 0, 400, 400);
     }
 
-    start(model) {
-        this.interval = setInterval(function(){
-            if(model.checkFood()){
-                model.snake.grow();
-            }
-            else {
-                model.snake.move();
-            }
-            this.render(model);
-        }.bind(this),(1 / (this.fps / 1000)));
-    }
-
     render(model) {
         this.renderBackground('#ecf0f1');
         this.renderMesh(model.food.position, 'food');
@@ -51,8 +39,8 @@ class CanvasView extends View{
         this.context.fillRect(x * 40 +2, y * 40 + 2, 36, 36);
     }
 
-    stop() {
-        clearInterval(this.interval);
+    updateScore(score) {
+        this.scoreElement.innerHTML = score;
     }
 }
 

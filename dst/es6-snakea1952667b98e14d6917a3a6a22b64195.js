@@ -1,4 +1,177 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * Created by xumingjie on 15/10/19.
+ */
+
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _View2 = require('./View');
+
+var _View3 = _interopRequireDefault(_View2);
+
+var ThreeDView = (function (_View) {
+    _inherits(ThreeDView, _View);
+
+    function ThreeDView(renderElement, scoreElement) {
+        _classCallCheck(this, ThreeDView);
+
+        _get(Object.getPrototypeOf(ThreeDView.prototype), 'constructor', this).call(this);
+        this.renderElement = renderElement;
+        this.scoreElement = scoreElement;
+        this.initMap();
+        this.initScene();
+        this.initLight();
+        this.setCameraPosition();
+    }
+
+    _createClass(ThreeDView, [{
+        key: 'initMap',
+        value: function initMap() {
+            this.map = new Array(10);
+            for (var i = 0; i < 10; i++) {
+                this.map[i] = new Array(10);
+                for (var j = 0; j < 10; j++) {
+                    this.map[i][j] = 0;
+                }
+            }
+        }
+    }, {
+        key: 'initScene',
+        value: function initScene() {
+            this.scene = new THREE.Scene();
+            this.camera = new THREE.PerspectiveCamera(60, 6 / 4, 0.1, 1000);
+            this.renderer = new THREE.WebGLRenderer({ antialias: true });
+            this.renderer.setSize(600, 400);
+            this.renderElement.appendChild(this.renderer.domElement);
+            this.renderedObject = new THREE.Object3D();
+        }
+    }, {
+        key: 'initLight',
+        value: function initLight() {
+            var ambientLight = new THREE.AmbientLight(0x000000);
+            this.scene.add(ambientLight);
+            var lights = [];
+            lights[0] = new THREE.PointLight(0xffffff, 1, 0);
+            lights[1] = new THREE.PointLight(0xffffff, 1, 0);
+            lights[2] = new THREE.PointLight(0xffffff, 1, 0);
+            lights[0].position.set(0, 200, 0);
+            lights[1].position.set(100, 200, 100);
+            lights[2].position.set(-100, -200, -100);
+
+            this.scene.add(lights[0]);
+            this.scene.add(lights[1]);
+            this.scene.add(lights[2]);
+        }
+    }, {
+        key: 'setCameraPosition',
+        value: function setCameraPosition() {
+            this.camera.position.z = 8;
+            this.camera.position.y = 3;
+            this.camera.position.x = 0.7;
+        }
+    }, {
+        key: 'render',
+        value: function render(model) {
+            this.scene.remove(this.renderedObject);
+            this.initMap();
+            this.renderedObject = new THREE.Object3D();
+            this.map[model.food.position.x][model.food.position.y] = 1;
+            this.renderMesh({ x: (model.food.position.x - 4) * 1.1, y: -(9 - model.food.position.y) * 1.1 }, 'food');
+            var snakeFront = model.snake.body.getFront();
+            while (snakeFront != null) {
+                this.map[snakeFront.position.x][snakeFront.position.y] = 1;
+                this.renderMesh({ x: (snakeFront.position.x - 4) * 1.1, y: -(9 - snakeFront.position.y) * 1.1 }, 'snake');
+                snakeFront = snakeFront.next;
+            }
+            this.renderMap();
+            this.renderedObject.rotation.x = Math.PI / 3;
+            this.scene.add(this.renderedObject);
+            this.renderer.render(this.scene, this.camera);
+        }
+    }, {
+        key: 'renderMap',
+        value: function renderMap() {
+            for (var i = 0; i < 10; i++) {
+                for (var j = 0; j < 10; j++) {
+                    if (this.map[i][j] == 0) {
+                        this.renderMesh({ x: (i - 4) * 1.1, y: (j - 9) * 1.1 }, 'map');
+                    }
+                }
+            }
+        }
+    }, {
+        key: 'renderMesh',
+        value: function renderMesh() {
+            var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+            var _ref$x = _ref.x;
+            var x = _ref$x === undefined ? 0 : _ref$x;
+            var _ref$y = _ref.y;
+            var y = _ref$y === undefined ? 0 : _ref$y;
+            var type = arguments.length <= 1 || arguments[1] === undefined ? 'food' : arguments[1];
+
+            var mesh = new THREE.Object3D();
+            mesh.add(new THREE.LineSegments(new THREE.BoxGeometry(1, 0.2, 1), new THREE.LineBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.5
+            })));
+            if (type == 'snake') {
+                mesh.add(new THREE.Mesh(new THREE.BoxGeometry(1, 0.2, 1), new THREE.MeshPhongMaterial({
+                    color: 0x156289,
+                    emissive: 0x072534,
+                    side: THREE.DoubleSide,
+                    shading: THREE.FlatShading
+                })));
+            } else if (type == 'food') {
+                mesh.add(new THREE.Mesh(new THREE.BoxGeometry(1, 0.2, 1), new THREE.MeshPhongMaterial({
+                    color: 0x9B59B6,
+                    emissive: 0x072534,
+                    side: THREE.DoubleSide,
+                    shading: THREE.FlatShading
+                })));
+            } else if (type == 'map') {
+                mesh.add(new THREE.Mesh(new THREE.BoxGeometry(1, 0.2, 1), new THREE.MeshPhongMaterial({
+                    color: 0xffffff,
+                    emissive: 0x072534,
+                    side: THREE.DoubleSide,
+                    shading: THREE.FlatShading
+                })));
+            }
+
+            mesh.position.x = x;
+            mesh.position.z = y;
+            this.renderedObject.add(mesh);
+        }
+    }, {
+        key: 'updateScore',
+        value: function updateScore(score) {
+            this.scoreElement.innerHTML = score;
+        }
+    }]);
+
+    return ThreeDView;
+})(_View3['default']);
+
+exports['default'] = ThreeDView;
+module.exports = exports['default'];
+
+
+},{"./View":12}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -38,18 +211,6 @@ var CanvasView = (function (_View) {
             this.context.fillRect(0, 0, 400, 400);
         }
     }, {
-        key: 'start',
-        value: function start(model) {
-            this.interval = setInterval((function () {
-                if (model.checkFood()) {
-                    model.snake.grow();
-                } else {
-                    model.snake.move();
-                }
-                this.render(model);
-            }).bind(this), 1 / (this.fps / 1000));
-        }
-    }, {
         key: 'render',
         value: function render(model) {
             this.renderBackground('#ecf0f1');
@@ -87,11 +248,6 @@ var CanvasView = (function (_View) {
         value: function updateScore(score) {
             this.scoreElement.innerHTML = score;
         }
-    }, {
-        key: 'stop',
-        value: function stop() {
-            clearInterval(this.interval);
-        }
     }]);
 
     return CanvasView;
@@ -101,7 +257,7 @@ exports['default'] = CanvasView;
 module.exports = exports['default'];
 
 
-},{"./View":11}],2:[function(require,module,exports){
+},{"./View":12}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -126,19 +282,25 @@ var _KeyBoardEvent = require("./KeyBoardEvent");
 
 var _KeyBoardEvent2 = _interopRequireDefault(_KeyBoardEvent);
 
+var _DView = require("./3DView");
+
+var _DView2 = _interopRequireDefault(_DView);
+
 var Controller = (function () {
-    function Controller(model, CanvasView, restartButton) {
+    function Controller(model, canvasView, threeDView, restartButton) {
         _classCallCheck(this, Controller);
 
         this.model = model;
-        this.canvasView = CanvasView;
+        this.canvasView = canvasView;
+        this.threeDView = threeDView;
         this.restartButton = restartButton;
+        this.fps = 5;
     }
 
     _createClass(Controller, [{
         key: "init",
         value: function init() {
-            this.canvasView.start(this.model);
+            this.start();
             this.bindEvent();
         }
     }, {
@@ -150,10 +312,11 @@ var Controller = (function () {
 
             this.model.scoreUpdateEvent.attach((function (sender, args) {
                 this.canvasView.updateScore(args.score);
+                this.threeDView.updateScore(args.score);
             }).bind(this));
 
             this.model.stopViewEvent.attach((function () {
-                this.canvasView.stop();
+                this.stop();
             }).bind(this));
 
             for (var prop in _KeyBoardEvent2["default"]) {
@@ -210,11 +373,31 @@ var Controller = (function () {
             }
         }
     }, {
+        key: "start",
+        value: function start() {
+            this.interval = setInterval((function () {
+                if (this.model.checkFood()) {
+
+                    this.model.snake.grow();
+                } else {
+                    this.model.snake.move();
+                }
+                this.canvasView.render(this.model);
+                this.threeDView.render(this.model);
+            }).bind(this), 1 / (this.fps / 1000));
+        }
+    }, {
+        key: "stop",
+        value: function stop() {
+            clearInterval(this.interval);
+        }
+    }, {
         key: "reset",
         value: function reset() {
             this.model.reset();
-            this.canvasView.start(this.model);
+            this.start();
             this.canvasView.updateScore(0);
+            this.threeDView.updateScore(0);
         }
     }]);
 
@@ -225,7 +408,7 @@ exports["default"] = Controller;
 module.exports = exports["default"];
 
 
-},{"./CanvasView":1,"./KeyBoardEvent":6,"./Model":7}],3:[function(require,module,exports){
+},{"./3DView":1,"./CanvasView":2,"./KeyBoardEvent":7,"./Model":8}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -243,7 +426,7 @@ exports['default'] = (function () {
 module.exports = exports['default'];
 
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -283,7 +466,7 @@ exports['default'] = Event;
 module.exports = exports['default'];
 
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -348,7 +531,7 @@ exports['default'] = Food;
 module.exports = exports['default'];
 
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -373,7 +556,7 @@ exports['default'] = (function () {
 module.exports = exports['default'];
 
 
-},{"./Event":4}],7:[function(require,module,exports){
+},{"./Event":5}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -402,6 +585,7 @@ var Model = (function () {
     function Model(food, snake) {
         _classCallCheck(this, Model);
 
+        this.mapSize = 10;
         this.food = food;
         this.snake = snake;
         this.score = 0;
@@ -471,7 +655,7 @@ exports['default'] = Model;
 module.exports = exports['default'];
 
 
-},{"./Event":4,"./Food":5,"./Snake":10}],8:[function(require,module,exports){
+},{"./Event":5,"./Food":6,"./Snake":11}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -516,7 +700,7 @@ exports['default'] = Node;
 module.exports = exports['default'];
 
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -629,7 +813,7 @@ exports['default'] = Queue;
 module.exports = exports['default'];
 
 
-},{"./ErrorCode":3,"./Node":8}],10:[function(require,module,exports){
+},{"./ErrorCode":4,"./Node":9}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -739,7 +923,7 @@ exports['default'] = Snake;
 module.exports = exports['default'];
 
 
-},{"./ErrorCode":3,"./Event":4,"./Queue":9}],11:[function(require,module,exports){
+},{"./ErrorCode":4,"./Event":5,"./Queue":10}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -751,11 +935,8 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var View = (function () {
-    function View(canvasId) {
+    function View() {
         _classCallCheck(this, View);
-
-        this.mapSize = 10;
-        this.fps = 5;
     }
 
     _createClass(View, [{
@@ -767,6 +948,9 @@ var View = (function () {
     }, {
         key: 'render',
         value: function render() {}
+    }, {
+        key: 'stop',
+        value: function stop() {}
     }]);
 
     return View;
@@ -778,7 +962,7 @@ exports['default'] = View;
 module.exports = exports['default'];
 
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -799,6 +983,10 @@ var _CanvasView = require('./CanvasView');
 
 var _CanvasView2 = _interopRequireDefault(_CanvasView);
 
+var _DView = require('./3DView');
+
+var _DView2 = _interopRequireDefault(_DView);
+
 var _Controller = require('./Controller');
 
 var _Controller2 = _interopRequireDefault(_Controller);
@@ -814,10 +1002,13 @@ var _Controller2 = _interopRequireDefault(_Controller);
     var canvas = document.getElementById(convasId);
     var context = canvas.getContext(contextType);
     var restartButton = document.getElementById('restartButton');
+    var threeDViewElement = document.getElementById('3d-view-container');
+    var threeDScoreElement = document.getElementById("3d-score");
     var canvasView = new _CanvasView2['default'](canvas, context, scoreElement);
-    var controller = new _Controller2['default'](model, canvasView, restartButton);
+    var threeDView = new _DView2['default'](threeDViewElement, threeDScoreElement);
+    var controller = new _Controller2['default'](model, canvasView, threeDView, restartButton);
     controller.init();
 })();
 
 
-},{"./CanvasView":1,"./Controller":2,"./Food":5,"./Model":7,"./Snake":10}]},{},[12]);
+},{"./3DView":1,"./CanvasView":2,"./Controller":3,"./Food":6,"./Model":8,"./Snake":11}]},{},[13]);
