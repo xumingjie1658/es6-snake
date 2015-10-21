@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1dea0d93-7b87-4ae4-af88-0b11fa55cc23" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/game.png" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dst/es6-snakee03b4f78d0561a73309e586b72d76e58.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/3DView.js" afterPath="$PROJECT_DIR$/js/3DView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/CanvasView.js" afterPath="$PROJECT_DIR$/js/CanvasView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Controller.js" afterPath="$PROJECT_DIR$/js/Controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/View.js" afterPath="$PROJECT_DIR$/js/View.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/threejs_test.html" afterPath="$PROJECT_DIR$/threejs_test.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="1dea0d93-7b87-4ae4-af88-0b11fa55cc23" name="Default" comment="" />
     <ignored path="es6-snake.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -331,6 +319,9 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="1dea0d93-7b87-4ae4-af88-0b11fa55cc23" name="Default" comment="" />
@@ -362,6 +353,14 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
